@@ -23,6 +23,7 @@
 /vendor
 _ide_helper.php
 _ide_helper_models.php
+/deploy/DEPLOYMENT.md
 Homestead.json
 Homestead.yaml
 Thumbs.db
