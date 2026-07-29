@@ -8,8 +8,13 @@ set -e
 cp /home/site/wwwroot/deploy/nginx-default.conf /etc/nginx/sites-available/default
 service nginx reload
 
-# 2. Run migrations (idempotent) and cache config & routes for production.
+# 2. Ensure Laravel's writable directories exist. The GitHub Actions artifact
+#    can drop empty dirs (their .gitignore placeholders get stripped), which
+#    makes realpath(storage/framework/views) fail during config:cache.
 cd /home/site/wwwroot
+mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache
+
+# 3. Run migrations (idempotent) and cache config & routes for production.
 php artisan migrate --force
 php artisan config:cache
 php artisan route:cache
